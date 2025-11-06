@@ -8,7 +8,14 @@
 import SwiftUI
 
 @main
-struct Forgetting_Ebbinghaus__urveApp: App {
+struct Forgetting_Ebbinghaus_urveApp: App {
+    
+    // --- ADD THIS INITIALIZER ---
+    // This is the earliest point in the app's lifecycle.
+    init() {
+        NotificationManager.shared.setupDelegate()
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

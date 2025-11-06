@@ -8,20 +8,36 @@
 import Foundation
 import UserNotifications
 
-// A dedicated manager for all notification-related tasks.
-// Using a final class singleton pattern.
-final class NotificationManager {
+// Manager needs to be an NSObject to be a delegate.
+final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     
-    // A single, shared instance of the manager.
     static let shared = NotificationManager()
-    private init() {} // Private initializer to prevent creating other instances.
     
-    // Asks the user for permission to send notifications.
+    // Make the initializer private again for a true singleton.
+    override private init() {
+        super.init()
+    }
+    
+    // --- NEW METHOD ---
+    // This will be called from the App's entry point.
+    func setupDelegate() {
+        UNUserNotificationCenter.current().delegate = self
+    }
+    
+    // This delegate method ensures notifications appear when the app is in the foreground.
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
+        // .banner is the macOS equivalent of .alert
+        completionHandler([.banner, .sound, .badge])
+    }
+    
     func requestAuthorization() {
         let options: UNAuthorizationOptions = [.alert, .sound, .badge]
         UNUserNotificationCenter.current().requestAuthorization(options: options) { (success, error) in
             if let error = error {
-                // For a real app, you'd want to handle this error.
                 print("NOTIFICATION ERROR: \(error.localizedDescription)")
             } else {
                 print("Notification permission granted: \(success)")
@@ -29,20 +45,17 @@ final class NotificationManager {
         }
     }
     
-    // Schedules a series of notifications for a given item.
     func scheduleNotifications(for item: RecallItem, on dates: [Date]) {
+        // ... (the rest of this function remains unchanged)
         for date in dates {
             let content = UNMutableNotificationContent()
             content.title = "Time to recall!"
             content.body = item.content
             content.sound = .default
             
-            // Trigger the notification on the specific date and time.
             let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
             
-            // Create a unique identifier for the request.
-            // This is crucial for being able to cancel it later.
             let requestIdentifier = "\(item.id)-\(date.timeIntervalSince1970)"
             let request = UNNotificationRequest(identifier: requestIdentifier, content: content, trigger: trigger)
             
@@ -52,7 +65,6 @@ final class NotificationManager {
                 }
             }
         }
-        
         print("Scheduled \(dates.count) notifications for '\(item.content)'")
     }
 }

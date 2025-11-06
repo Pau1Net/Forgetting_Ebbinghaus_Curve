@@ -9,12 +9,11 @@ import Foundation
 
 @MainActor
 class RecallListViewModel: ObservableObject {
+    
     @Published private(set) var items: [RecallItem] = []
     
-    // Get a reference to our singleton manager.
     private let notificationManager = NotificationManager.shared
     
-    // Public method to be called from the View.
     func requestNotificationPermission() {
         notificationManager.requestAuthorization()
     }
@@ -24,15 +23,20 @@ class RecallListViewModel: ObservableObject {
         
         let newItem = RecallItem(content: content)
         items.insert(newItem, at: 0)
-        
-        // --- NEW LOGIC HERE ---
-        // 1. Calculate the reminder dates.
+
         let reminderDates = ForgettingCurve.reminderDates(from: newItem.createdAt)
-        // 2. Schedule notifications for these dates.
         notificationManager.scheduleNotifications(for: newItem, on: reminderDates)
     }
     
     func getReminderDates(for item: RecallItem) -> [Date] {
         return ForgettingCurve.reminderDates(from: item.createdAt)
+    }
+    
+    // --- НОВЫЙ МЕТОД ЗДЕСЬ ---
+    // Находит следующую дату напоминания, которая еще не наступила.
+    func getNextReminderDate(for item: RecallItem) -> Date? {
+        let allDates = ForgettingCurve.reminderDates(from: item.createdAt)
+        // Находим первую дату в массиве, которая больше текущего времени.
+        return allDates.first(where: { $0 > Date() })
     }
 }

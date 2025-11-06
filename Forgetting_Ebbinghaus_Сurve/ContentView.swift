@@ -24,14 +24,20 @@ struct ContentView: View {
                         Spacer()
                     }
                 } else {
-                    List {
-                        ForEach(viewModel.items) { item in
-                            // Here we use our new, simple, and modular view.
-                            // This resolves the compiler confusion.
-                            RecallItemRowView(
-                                item: item,
-                                reminderDates: viewModel.getReminderDates(for: item)
-                            )
+                    ScrollView {
+                        LazyVStack(spacing: 0) {
+                            ForEach(viewModel.items) { item in
+                                // --- ИЗМЕНЕНИЕ ЗДЕСЬ ---
+                                // Теперь мы получаем следующую дату из ViewModel и передаем ее.
+                                RecallItemRowView(
+                                    item: item,
+                                    reminderDates: viewModel.getReminderDates(for: item),
+                                    nextReminderDate: viewModel.getNextReminderDate(for: item)
+                                )
+                                .padding(.horizontal)
+                                
+                                Divider()
+                            }
                         }
                     }
                 }
@@ -62,4 +68,3 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
-
