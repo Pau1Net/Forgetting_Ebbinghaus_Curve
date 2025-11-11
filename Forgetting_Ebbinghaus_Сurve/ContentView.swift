@@ -24,20 +24,29 @@ struct ContentView: View {
                         Spacer()
                     }
                 } else {
-                    ScrollView {
-                        LazyVStack(spacing: 0) {
-                            ForEach(viewModel.items) { item in
-                                RecallItemRowView(
-                                    item: item,
-                                    reminderDates: viewModel.getReminderDates(for: item),
-                                    nextReminderDate: viewModel.getNextReminderDate(for: item)
-                                )
-                                .padding(.horizontal)
-                                
-                                Divider()
+                    // Мы используем List, т.к. он предоставляет встроенную поддержку удаления.
+                    List {
+                        ForEach(viewModel.items) { item in
+                            RecallItemRowView(
+                                item: item,
+                                reminderDates: viewModel.getReminderDates(for: item),
+                                nextReminderDate: viewModel.getNextReminderDate(for: item)
+                            )
+                            // Модификатор для контекстного меню на macOS (правый клик)
+                            .contextMenu {
+                                Button("Delete", role: .destructive) {
+                                    // Находим индекс элемента и вызываем удаление.
+                                    if let index = viewModel.items.firstIndex(where: { $0.id == item.id }) {
+                                        viewModel.delete(at: IndexSet(integer: index))
+                                    }
+                                }
                             }
                         }
+                        // Модификатор для жеста "свайп-для-удаления" на iOS.
+                        .onDelete(perform: viewModel.delete)
                     }
+                    // Используем стиль .plain для консистентного вида на всех платформах.
+                    .listStyle(.plain)
                 }
                 
                 HStack {
@@ -53,17 +62,14 @@ struct ContentView: View {
                 .padding()
             }
             .navigationTitle("Recall List")
-            // --- ДОБАВЛЕННЫЙ БЛОК КОДА ---
             .toolbar {
                 ToolbarItemGroup(placement: .primaryAction) {
-                    // Кнопка для вывода списка уведомлений в консоль
                     Button {
                         viewModel.logAllPendingNotifications()
                     } label: {
                         Label("Show Log", systemImage: "list.bullet.rectangle.portrait")
                     }
                     
-                    // Кнопка для удаления всех запланированных уведомлений
                     Button {
                         viewModel.cancelAllPendingNotifications()
                     } label: {
@@ -71,7 +77,6 @@ struct ContentView: View {
                     }
                 }
             }
-            // --- КОНЕЦ БЛОКА ---
         }
         .onAppear(perform: viewModel.requestNotificationPermission)
     }

@@ -10,9 +10,36 @@ import Foundation
 @MainActor
 class RecallListViewModel: ObservableObject {
     
-    @Published private(set) var items: [RecallItem] = []
+    @Published private(set) var items: [RecallItem] = [] {
+        didSet {
+            persistenceManager.saveItems(items)
+        }
+    }
     
     private let notificationManager = NotificationManager.shared
+    private let persistenceManager = PersistenceManager.shared
+
+    init() {
+        self.items = persistenceManager.loadItems()
+    }
+    
+    // --- НОВЫЙ МЕТОД ---
+    // Безопасно удаляет элементы по указанным индексам
+    // и отменяет связанные с ними уведомления.
+    func delete(at offsets: IndexSet) {
+        // Сначала получаем элементы, которые будут удалены.
+        let itemsToDelete = offsets.map { items[$0] }
+        
+        // Для каждого из них отменяем запланированные уведомления.
+        itemsToDelete.forEach { item in
+            notificationManager.cancelNotifications(for: item)
+        }
+        
+        // Наконец, удаляем сами элементы из нашего массива.
+        items.remove(atOffsets: offsets)
+    }
+    
+    // --- Старые методы (без изменений) ---
     
     func requestNotificationPermission() {
         notificationManager.requestAuthorization()
@@ -37,12 +64,10 @@ class RecallListViewModel: ObservableObject {
         return allDates.first(where: { $0 > Date() })
     }
     
-    // --- НОВЫЙ МЕТОД №1 ---
     func cancelAllPendingNotifications() {
         notificationManager.cancelAllNotifications()
     }
     
-    // --- НОВЫЙ МЕТОД №2 ---
     func logAllPendingNotifications() {
         notificationManager.logPendingNotifications()
     }
