@@ -19,4 +19,9 @@ It's worth noting that this application will remain completely free and open-sou
   - [ ] Italian
 - [ ] __Complete README__ (documentation with detailed installation and usage instructions)
 
+🤝 Contributing
+Contributions are welcome! Please contact [pavelkotsko@icloud.com](mailto:developer@example.com?subject=Forgetting%20Ebbinghaus%20Curve) for any questions.
+
+
+
 <div align="center"> Made with ❤️ by the Paul "PaulNet" </div> 
