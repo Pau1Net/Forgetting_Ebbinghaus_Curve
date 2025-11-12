@@ -12,6 +12,8 @@ It's worth noting that this application will remain completely free and open-sou
 - [ ] __Adaptive learning algorithm__ (based on input text length, enabling efficient studying for both short snippets and lengthy documents)
 - [ ] __PDF support__ (for importing and working with PDF files)
 - [ ] __AI-powered context__ (providing additional insights for studied materials via built-in neural network)
+- [ ] Add standart and UI tests
+- [ ] Add License file (Apache 2.0)
 - [ ] __Multi-language support__ (beyond English)
   - [ ] Russian
   - [ ] French
@@ -19,7 +21,8 @@ It's worth noting that this application will remain completely free and open-sou
   - [ ] Italian
 - [ ] __Complete README__ (documentation with detailed installation and usage instructions)
 
-🤝 Contributing
+🤝 __Contributing__
+
 Contributions are welcome! Please contact [pavelkotsko@icloud.com](mailto:developer@example.com?subject=Forgetting%20Ebbinghaus%20Curve) for any questions.
 
 
