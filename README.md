@@ -25,6 +25,7 @@ It's worth noting that this application will remain completely free and open-sou
 - [ ] __Complete README__ (documentation with detailed installation and usage instructions)
 - [ ] Add UI interface, showed in demo
 - [ ] Add UI tests
+- [ ] __Add multiple media types support__ (in long plan)
 
 🤝 __Contributing__
 
