@@ -10,12 +10,12 @@ It's worth noting that this application will remain completely free and open-sou
 
 - [x] Initial project setup
 - [x] Basic note creation
-- [ ] __"Smart" notifications system__ (Smart notifications that consider input text size, time of day, and various other important parameters)
+- [x] __"Smart" notifications system__ (Smart notifications that consider input text size, time of day, and various other important parameters)
 - [ ] Flashcard generation
-- [ ] __Adaptive learning algorithm__ (based on input text length, enabling efficient studying for both short snippets and lengthy documents)
+- [x] __Adaptive learning algorithm__ (based on input text length, enabling efficient studying for both short snippets and lengthy documents)
 - [ ] __PDF support__ (for importing and working with PDF files)
 - [ ] __AI-powered context__ (providing additional insights for studied materials via built-in neural network)
-- [ ] Add standart and UI tests
+- [x] Add standart tests
 - [ ] Add License file (Apache 2.0)
 - [ ] __Multi-language support__ (beyond English)
   - [ ] Russian
@@ -23,6 +23,9 @@ It's worth noting that this application will remain completely free and open-sou
   - [ ] Spanish
   - [ ] Italian
 - [ ] __Complete README__ (documentation with detailed installation and usage instructions)
+- [ ] Add UI interface, showed in demo
+- [ ] Add UI tests
+- [ ] __Add multiple media types support__ (in long plan)
 
 🤝 __Contributing__
 
